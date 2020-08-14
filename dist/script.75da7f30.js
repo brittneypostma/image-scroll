@@ -879,7 +879,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var imageContainer = document.getElementById('image-container');
 var loader = document.getElementById('loader');
-var photosArray = []; // Helper function
+var photosArray = [];
+var ready = false;
+var imagesLoaded = 0;
+var totalImages = 0; // Check all images loaded
+
+function imageLoaded() {
+  imagesLoaded++;
+  loader.hidden = true;
+  if (imagesLoaded === totalImages) ready = true;
+} // Helper function
+
 
 function setAttributes(el, att) {
   for (var key in att) {
@@ -889,6 +899,8 @@ function setAttributes(el, att) {
 
 
 function displayPhotos() {
+  imagesLoaded = 0;
+  totalImages = photosArray.length;
   photosArray.forEach(function (photo) {
     var item = document.createElement('a');
     setAttributes(item, {
@@ -901,6 +913,7 @@ function displayPhotos() {
       src: photo.urls.regular,
       alt: photo.alt_description
     });
+    img.addEventListener('load', imageLoaded);
     item.appendChild(img);
     imageContainer.appendChild(item);
   });
@@ -953,9 +966,11 @@ function _getPhotos() {
 }
 
 window.addEventListener('scroll', function () {
-  console.log('scrolled'); // window.innerHeight and window.scrollY to calc
-
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) getPhotos();
+  // window.innerHeight and window.scrollY to calc
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
+    ready = false;
+    getPhotos();
+  }
 }); // On Load
 
 getPhotos();
@@ -987,7 +1002,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50462" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50535" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

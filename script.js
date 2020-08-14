@@ -4,6 +4,16 @@ const imageContainer = document.getElementById('image-container')
 const loader = document.getElementById('loader')
 
 let photosArray = []
+let ready = false
+let imagesLoaded = 0
+let totalImages = 0
+
+// Check all images loaded
+function imageLoaded() {
+  imagesLoaded++
+  loader.hidden = true
+  if (imagesLoaded === totalImages) ready = true
+}
 
 // Helper function
 function setAttributes(el, att) {
@@ -14,6 +24,8 @@ function setAttributes(el, att) {
 
 // Create elements on page
 function displayPhotos() {
+  imagesLoaded = 0
+  totalImages = photosArray.length
   photosArray.forEach(photo => {
     const item = document.createElement('a')
     setAttributes(item, {
@@ -26,6 +38,8 @@ function displayPhotos() {
       src: photo.urls.regular,
       alt: photo.alt_description
     })
+    img.addEventListener('load', imageLoaded)
+
     item.appendChild(img)
     imageContainer.appendChild(item)
   })
@@ -48,9 +62,11 @@ async function getPhotos() {
 
 // see if near bottom
 window.addEventListener('scroll', () => {
-  console.log('scrolled')
   // window.innerHeight and window.scrollY to calc
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) getPhotos()
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
+    ready = false
+    getPhotos()
+  }
 })
 
 
