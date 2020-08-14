@@ -5,6 +5,32 @@ const loader = document.getElementById('loader')
 
 let photosArray = []
 
+// Helper function
+function setAttributes(el, att) {
+  for (const key in att) {
+    el.setAttribute(key, att[key])
+  }
+}
+
+// Create elements on page
+function displayPhotos() {
+  photosArray.forEach(photo => {
+    const item = document.createElement('a')
+    setAttributes(item, {
+      href: photo.links.html,
+      target: '_blank',
+      rel: 'noopener noreffer'
+    })
+    const img = document.createElement('img')
+    setAttributes(img, {
+      src: photo.urls.regular,
+      alt: photo.alt_description
+    })
+    item.appendChild(img)
+    imageContainer.appendChild(item)
+  })
+}
+
 // Unsplash API
 const count = 10
 const apiURL = `https://api.unsplash.com/photos/random/?client_id=${process.env.apiKey}&count=${count}`
@@ -20,21 +46,13 @@ async function getPhotos() {
   }
 }
 
-function displayPhotos() {
-  photosArray.forEach(photo => {
-    console.log(photo)
-    const item = document.createElement('a')
-    item.setAttribute('href', photo.links.html)
-    item.setAttribute('target', '_blank')
-    item.setAttribute('rel', 'noopener noreffer')
+// see if near bottom
+window.addEventListener('scroll', () => {
+  console.log('scrolled')
+  // window.innerHeight and window.scrollY to calc
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) getPhotos()
+})
 
-    const img = document.createElement('img')
-    img.setAttribute('src', photo.urls.regular)
-    img.setAttribute('alt', photo.alt_description)
 
-    item.appendChild(img)
-    imageContainer.appendChild(item)
-  })
-}
 // On Load
 getPhotos()

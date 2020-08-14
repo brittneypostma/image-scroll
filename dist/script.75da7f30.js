@@ -879,14 +879,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var imageContainer = document.getElementById('image-container');
 var loader = document.getElementById('loader');
-var photosArray = []; // Unsplash API
+var photosArray = []; // Helper function
+
+function setAttributes(el, att) {
+  for (var key in att) {
+    el.setAttribute(key, att[key]);
+  }
+} // Create elements on page
+
+
+function displayPhotos() {
+  photosArray.forEach(function (photo) {
+    var item = document.createElement('a');
+    setAttributes(item, {
+      href: photo.links.html,
+      target: '_blank',
+      rel: 'noopener noreffer'
+    });
+    var img = document.createElement('img');
+    setAttributes(img, {
+      src: photo.urls.regular,
+      alt: photo.alt_description
+    });
+    item.appendChild(img);
+    imageContainer.appendChild(item);
+  });
+} // Unsplash API
+
 
 var count = 10;
 var apiURL = "https://api.unsplash.com/photos/random/?client_id=".concat("Zhj593Zn8aEOoffi5nkyyumuuz-phfUzbFM-dk4Ypys", "&count=").concat(count); // Get photos from Unsplash
 
 function getPhotos() {
   return _getPhotos.apply(this, arguments);
-}
+} // see if near bottom
+
 
 function _getPhotos() {
   _getPhotos = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -925,21 +952,11 @@ function _getPhotos() {
   return _getPhotos.apply(this, arguments);
 }
 
-function displayPhotos() {
-  photosArray.forEach(function (photo) {
-    console.log(photo);
-    var item = document.createElement('a');
-    item.setAttribute('href', photo.links.html);
-    item.setAttribute('target', '_blank');
-    item.setAttribute('rel', 'noopener noreffer');
-    var img = document.createElement('img');
-    img.setAttribute('src', photo.urls.regular);
-    img.setAttribute('alt', photo.alt_description);
-    item.appendChild(img);
-    imageContainer.appendChild(item);
-  });
-} // On Load
+window.addEventListener('scroll', function () {
+  console.log('scrolled'); // window.innerHeight and window.scrollY to calc
 
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) getPhotos();
+}); // On Load
 
 getPhotos();
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js"}],"C:/Users/Britt/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -970,7 +987,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50255" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50462" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
