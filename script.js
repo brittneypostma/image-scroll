@@ -1,5 +1,5 @@
 // Unsplash API
-require('dotenv').config()
+import 'regenerator-runtime/runtime'
 const count = 10
 const apiURL = `https://api.unsplash.com/photos/random/?client_id=${process.env.apiKey}&count=${count}`
 
