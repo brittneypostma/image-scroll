@@ -877,17 +877,20 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var imageContainer = document.getElementById('image-container');
+var loader = document.getElementById('loader');
+var photosArray = []; // Unsplash API
+
 var count = 10;
 var apiURL = "https://api.unsplash.com/photos/random/?client_id=".concat("Zhj593Zn8aEOoffi5nkyyumuuz-phfUzbFM-dk4Ypys", "&count=").concat(count); // Get photos from Unsplash
 
 function getPhotos() {
   return _getPhotos.apply(this, arguments);
-} // On Load
-
+}
 
 function _getPhotos() {
   _getPhotos = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var res, data;
+    var res;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -902,8 +905,8 @@ function _getPhotos() {
             return res.json();
 
           case 6:
-            data = _context.sent;
-            console.log(data);
+            photosArray = _context.sent;
+            displayPhotos();
             _context.next = 13;
             break;
 
@@ -921,6 +924,22 @@ function _getPhotos() {
   }));
   return _getPhotos.apply(this, arguments);
 }
+
+function displayPhotos() {
+  photosArray.forEach(function (photo) {
+    console.log(photo);
+    var item = document.createElement('a');
+    item.setAttribute('href', photo.links.html);
+    item.setAttribute('target', '_blank');
+    item.setAttribute('rel', 'noopener noreffer');
+    var img = document.createElement('img');
+    img.setAttribute('src', photo.urls.regular);
+    img.setAttribute('alt', photo.alt_description);
+    item.appendChild(img);
+    imageContainer.appendChild(item);
+  });
+} // On Load
+
 
 getPhotos();
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js"}],"C:/Users/Britt/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -951,7 +970,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53218" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50255" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
